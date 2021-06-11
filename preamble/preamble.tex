@@ -1,0 +1,146 @@
+\documentclass[14pt,a4paper]{report}
+
+\usepackage[14pt]{extsizes}
+
+%%% Работа с русским языком
+\usepackage{cmap}					% поиск в PDF
+\usepackage{mathtext} 				% русские буквы в фомулах
+\usepackage[T2A]{fontenc}			% кодировка
+\usepackage[utf8]{inputenc}			% кодировка исходного текста
+\usepackage[english,russian]{babel}	% локализация и переносы
+
+\usepackage{fancyhdr}
+%Numeration top center
+\fancyhf{}
+\fancyhead[C]{\thepage}
+\pagestyle{fancy}
+
+\usepackage{lipsum}
+\usepackage{etoolbox}
+\usepackage{color}
+
+%%% Работа с картинками
+\usepackage{graphicx}  % Для вставки рисунков
+\graphicspath{{images/}}  % папки с картинками
+\setlength\fboxsep{3pt} % Отступ рамки \fbox{} от рисунка
+\setlength\fboxrule{1pt} % Толщина линий рамки \fbox{}
+\usepackage{wrapfig} % Обтекание рисунков и таблиц текстом
+\usepackage[export]{adjustbox}
+\usepackage{subcaption}
+\usepackage{float}
+
+%%% Дополнительная работа с математикой
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} % AMS
+\usepackage{icomma} % "Умная" запятая: $0,2$ --- число, $0, 2$ --- перечисление
+\usepackage{systeme}
+
+\usepackage{tabularx}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+%Adds "References" to the table of contents
+\usepackage[nottoc]{tocbibind} 
+
+% abs and norm 
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+%Algorithms
+%http://blog.harrix.org/article/648
+\usepackage[ruled,vlined]{algorithm2e}
+
+\SetKwInput{KwData}{Исходные параметры}
+\SetKwInput{KwResult}{Результат}
+\SetKwInput{KwIn}{Входные данные}
+\SetKwInput{KwOut}{Выходные данные}
+\SetKwIF{If}{ElseIf}{Else}{если}{тогда}{иначе если}{иначе}{конец условия}
+\SetKwFor{While}{до тех пор, пока}{выполнять}{конец цикла}
+\SetKw{KwTo}{от}
+\SetKw{KwRet}{возвратить}
+\SetKw{Return}{возвратить}
+\SetKwBlock{Begin}{начало блока}{конец блока}
+\SetKwSwitch{Switch}{Case}{Other}{Проверить значение}{и выполнить}{вариант}{в противном случае}{конец варианта}{конец проверки значений}
+\SetKwFor{For}{цикл}{выполнять}{конец цикла}
+\SetKwFor{ForEach}{для каждого}{выполнять}{конец цикла}
+\SetKwRepeat{Repeat}{повторять}{до тех пор, пока}
+\SetAlgorithmName{Алгоритм}{алгоритм}{Список алгоритмов}
+
+% hyper refs
+\usepackage{hyperref}
+\iffalse
+\hoffset=-5.4mm
+\oddsidemargin=0mm
+\textwidth=180mm
+\voffset=-5.4mm
+\topmargin=0mm
+\headheight=5mm
+\headsep=7mm
+\textheight=235mm
+\footskip=10mm
+\fi
+\parindent=12.5mm
+\setlength{\parindent}{12.5mm}
+\usepackage{indentfirst}
+\linespread{1.5}
+
+\usepackage[left=3cm,right=1.5cm,
+top=2cm,bottom=2cm]{geometry}
+
+\pagestyle{myheadings}
+\makeatletter
+\renewcommand{\@oddhead}{}
+\renewcommand{\@oddfoot}{\hfil\thepage\hfil}
+
+\newtheorem{definition}{Определение}
+\newtheorem*{theorem*}{Теорема}
+\newtheorem{theorem}{Теорема}
+\newtheorem{lemma}{Лемма}
+\newtheorem*{lemma*}{Лемма}
+\newtheorem{consequence}{Следствие}
+
+
+\newcommand{\Om}[1][]{$\Omega_{#1}$}
+\newcommand{\diam}{\mathrm{diam}}
+\newcommand{\cat}[1]{{\normalfont\textbf{#1}}}
+\newcommand{\Cech}{\mathrm{Cech}}
+\newcommand{\Rips}{\mathrm{Rips}}
+
+\DeclareMathOperator{\im}{im}
+\newcommand{\quotient}[2]{{\raisebox{.2em}{$#1$}\left/\raisebox{-.2em}{$#2$}\right.}}
+
+\usepackage{titlesec}
+
+\newcommand{\chapfnt}{\fontsize{16}{19}}
+\newcommand{\secfnt}{\fontsize{14}{17}}
+\newcommand{\ssecfnt}{\fontsize{12}{14}}
+
+\titleformat{\chapter}%[display]
+{\normalfont\chapfnt\bfseries}{\thechapter}{24pt}{\chapfnt}
+%{\normalfont\chapfnt\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\chapfnt}
+
+\titleformat{\section}
+{\normalfont\bfseries}{\thesection.}{1em}{}
+\titleformat{\subsection}
+{\small\bfseries}{\thesubsection}{1em}{}
+
+%\titleformat{\section}
+%{\normalfont\secfnt\bfseries}{\thesection}{1em}{}
+
+%\titleformat{\subsection}
+%{\normalfont\ssecfnt\bfseries}{\thesubsection}{1em}{}
+
+\titlespacing*{\chapter} {0pt}{50pt}{40pt}
+\titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection} {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+%\renewcommand{\thesection}{\arabic{section}}
