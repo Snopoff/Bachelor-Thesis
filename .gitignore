@@ -10,3 +10,10 @@
 *.cb
 *.cb2
 .*.lb
+.*.txss
+.*.gz
+.*.snm
+.*.vrb
+.*.out
+.*.nav
+.ipynb_checkpoints
