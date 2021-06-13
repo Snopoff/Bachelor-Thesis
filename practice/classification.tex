@@ -38,8 +38,8 @@
 
 \begin{figure}[!htbp]
 	\begin{center}
-		\includegraphics[width=0.5\textwidth]{example-image-a}\\
-		\caption{Черно-белые изображения, полученные с помощью различных фильтраций. Для наглядности, была использована цветная гамма для представления черно-белых значений}
+		\includegraphics[width=0.75\textwidth]{differentFiltrations.png}\\
+		\caption{Черно-белые изображения, полученные с помощью различных фильтраций. Для наглядности, была использована цветная гамма для представления черно-белых значений. В верхнем левом углу -- оригинальное изображение; в верхней правой -- радиальная фильтрация. В нижнем левой углу -- фильтрация по высоте; в нижнем правом углу -- фильтрация по плотности}
 		\label{filtration-comparison}
 	\end{center}
 \end{figure}
@@ -54,7 +54,6 @@ H: p \mapsto
 	\right.
 \]
 где $H_\infty$ -- это значение фильтрации $H$ самого дальнего пикселя изображения до гиперплоскости.
-
 
 Радиальная фильтрация(Radial filtration) -- это отображение $R: I \to \mathbb{R}$, которое каждому пикселю изображения сопоставляет расстояние до выбранного заранее центра $c$:
 \[
@@ -78,4 +77,55 @@ H: p \mapsto
 	\end{center}
 \end{figure}
 
-Далее для каждой из полученных фильтраций вычислялись устойчивые гомологии $0$ и $1$ размерности, а по ним строились диаграммы персистентности, которые далее были приведены к одному и тому же масштабу. В свою же очередь, для каждой диаграммы вычислялись 14 признаков: персистентная энтропия и 13 амплитуд для различных векторных представлений. Таким образом, для одной картинки получалось $17 \times 2 \times 14 = 476$ признаков. На рис. \ref{example} представлен пример работы алгоритма для одного бинарного изображения из датасета.
+Далее для каждой из полученных фильтраций вычислялись устойчивые гомологии $0$ и $1$ размерности, а по ним строились диаграммы персистентности, которые далее были приведены к одному и тому же масштабу. В свою же очередь, для каждой диаграммы вычислялись 14 признаков: персистентная энтропия и 13 амплитуд для различных векторных представлений. Таким образом, для одной картинки получалось $17 \times 2 \times 14 = 476$ признаков.
+
+\begin{figure}[!htbp]
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{radial_persistence.png}\\
+		\caption{Radial Filtration}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{height_persistence.png}\\
+		\caption{Height Filtration}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{density_persistence.png}\\
+		\caption{Density Filtration}
+	\end{subfigure}%
+	\caption{Диаграммы устойчивости для различных фильтраций}
+	\label{persistences}
+\end{figure}
+
+ На рис. \ref{example} представлен пример работы алгоритма для одного бинарного изображения из датасета. На рис. \ref{persistences} представлены диаграммы устойчивости для различных фильтраций. На рис. \ref{scaled_persistences} представлены диаграммы устойчивости, приведенные к одному и тому же масштабу. Видно, что изменились значения шкал рождения/смерти у диаграмм.
+
+
+\begin{figure}[!htbp]
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{scaled_radial_persistence.png}\\
+		\caption{Radial Filtration}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{scaled_height_persistence.png}\\
+		\caption{Height Filtration}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{scaled_density_persistence.png}\\
+		\caption{Density Filtration}
+	\end{subfigure}%
+	\caption{Диаграммы устойчивости для различных фильтраций, приведенные к одному масштабу}
+	\label{scaled_persistences}
+\end{figure}
+
+После получения векторного представления для изображений из выборки, дальнейшим этапом является обучение модели машинного обучения. В данной работе использовались следующие модели:
+\begin{itemize}
+	\item Метод опорных векторов
+	\item Случайный лес
+	\item Логистическая регрессия
+	\item Бустинги
+\end{itemize}
