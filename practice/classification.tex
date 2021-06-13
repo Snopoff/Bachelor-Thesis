@@ -77,7 +77,7 @@ H: p \mapsto
 	\end{center}
 \end{figure}
 
-Далее для каждой из полученных фильтраций вычислялись устойчивые гомологии $0$ и $1$ размерности, а по ним строились диаграммы персистентности, которые далее были приведены к одному и тому же масштабу. В свою же очередь, для каждой диаграммы вычислялись 14 признаков: персистентная энтропия и 13 амплитуд для различных векторных представлений. Таким образом, для одной картинки получалось $17 \times 2 \times 14 = 476$ признаков.
+Далее для каждой из полученных фильтраций вычислялись устойчивые гомологии $0$ и $1$ размерности, а по ним строились диаграммы персистентности, которые далее были приведены к одному и тому же масштабу. 
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{.33\textwidth}
@@ -122,10 +122,34 @@ H: p \mapsto
 	\label{scaled_persistences}
 \end{figure}
 
+В свою же очередь, для каждой диаграммы вычислялись 14 признаков: персистентная энтропия и 13 амплитуд для различных векторных представлений. На рис. \ref{representations} представлены примеры таких представлений. Таким образом, для одной картинки получалось $17 \times 2 \times 14 = 476$ признаков.
+
+\begin{figure}[!htbp]
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{example-image-a}\\
+		\caption{раз}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{example-image-b}\\
+		\caption{два}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{example-image-c}\\
+		\caption{три}
+	\end{subfigure}%
+	\caption{Различные векторные представления}
+	\label{representations}
+\end{figure}
+
 После получения векторного представления для изображений из выборки, дальнейшим этапом является обучение модели машинного обучения. В данной работе использовались следующие модели:
 \begin{itemize}
 	\item Метод опорных векторов
 	\item Случайный лес
 	\item Логистическая регрессия
-	\item Бустинги
+	\item LightGBM
+	\item CatBoost
+	\item XGBoost
 \end{itemize}
