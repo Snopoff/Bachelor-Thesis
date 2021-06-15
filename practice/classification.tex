@@ -128,25 +128,25 @@ H: p \mapsto
 	\label{scaled_persistences}
 \end{figure}
 
-В свою же очередь, для каждой диаграммы вычислялись $14$ признаков: персистентная энтропия и $13$ амплитуд для различных векторных представлений. На рис. \ref{representations} представлены примеры таких представлений. Таким образом, для одной картинки получалось $20 \times 2 \times 14 = 560$ признаков. Однако вероятно, что некоторые из таких признаков будут коррелировать, а поэтому необходимо будет произвести отбор признаков.
+В свою же очередь, для каждой диаграммы вычислялись $14$ признаков: персистентная энтропия и $13$ амплитуд для различных векторных представлений. На рис. \ref{representations} представлен пример таких представлений для различных фильтраций. Таким образом, для одной картинки получалось $20 \times 2 \times 14 = 560$ признаков. Однако вероятно, что некоторые из таких признаков будут коррелировать, а поэтому необходимо будет произвести отбор признаков.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{.33\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{example-image-a}\\
-		\caption{раз}
+		\includegraphics[width=\linewidth]{heat_height.png}\\
+		\caption{Height filtration}
 	\end{subfigure}%
 	\begin{subfigure}{.33\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{example-image-b}\\
-		\caption{два}
+		\includegraphics[width=\linewidth]{heat_rad.png}\\
+		\caption{Radial filtration}
 	\end{subfigure}%
 	\begin{subfigure}{.33\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{example-image-c}\\
-		\caption{три}
+		\includegraphics[width=\linewidth]{heat_dense.png}\\
+		\caption{Density filtration}
 	\end{subfigure}%
-	\caption{Различные векторные представления}
+	\caption{Heat Kernel для различных фильтраций для одного и того же изображения}
 	\label{representations}
 \end{figure}
 
@@ -213,7 +213,7 @@ H: p \mapsto
 
 \begin{figure}[!htbp]
 	\begin{center}
-		\includegraphics[width=0.75\textwidth]{example-image-a}\\
+		\includegraphics[width=0.75\textwidth]{models-topfeatures.png}\\
 		\caption{График зависимости качества построенных моделей от числа признаков}
 		\label{accuracy-numFeatures}
 	\end{center}
@@ -224,24 +224,52 @@ H: p \mapsto
 Далее можно сравнить качество моделей, которые используют топологические признаки, с качеством моделей, которые в качестве признаков будут получать просто векторное представление изображения. То есть для таких моделей признаками будут сами значения пикселей изображения. Так как модели с топологическими признаками показали наилучший результат именно при уменьшении количества признаков, то также отсортируем признаки для новых моделей по убыванию важности для случайного леса, и будем брать первые $50n$ признаков, каждый раз обучая модель с поиском по сетке, чтобы подобрать наилучшие параметры. Так как теперь признаков будет $28 \times 28 = 784$, то $1 \leq n \leq 15$. На графике \ref{accuracies_diff_features} представлены сравнения различных моделей, но с разными признаками. 
 
 \begin{figure}[!htbp]
-	\begin{subfigure}{.33\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{example-image-a}\\
-		\caption{раз}
-	\end{subfigure}%
-	\begin{subfigure}{.33\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{example-image-b}\\
-		\caption{два}
-	\end{subfigure}%
-	\begin{subfigure}{.33\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{example-image-c}\\
-		\caption{три}
-	\end{subfigure}%
+	    \centering % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{log_diff_features_train.png}
+		\caption{Логистическая регрессия на тренировочной выборке}
+		\label{fig:1}
+	\end{subfigure}\hfil % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{svm_diff_features_train.png}
+		\caption{Метод опорных векторов на тренировочной выборке}
+		\label{fig:2}
+	\end{subfigure}\hfil % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{rf_diff_features_train.png}
+		\caption{Случайный лес на тренировочной выборке}
+		\label{fig:3}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{log_diff_features_test.png}
+		\caption{Логистическая регрессия на тестовой выборке}
+		\label{fig:4}
+	\end{subfigure}\hfil % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{svm_diff_features_test.png}
+		\caption{Метод опорных векторов на тестовой выборке}
+		\label{fig:5}
+	\end{subfigure}\hfil % <-- added
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\linewidth]{rf_diff_features_test.png}
+		\caption{Случайный лес на тестовой выборке}
+		\label{fig:6}
+	\end{subfigure}
 	\caption{Сравнение различных моделей, которые используют различные признаки}
 	\label{accuracies_diff_features}
 \end{figure}
 
 Видно, что модели с топологическими признаками при малом количестве признаков достигает лучшей точности. Отсюда можно сделать вывод, что топологические признаки содержат в себе наиболее важную, релевантную информацию о структуре данных в меньшем числе признаков. Поэтому такой подход можно рассматривать как подход для уменьшения размерности данных. 
 
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{missclassified.png}\\
+		\caption{Первые несколько изображений, на которых ошибся классификатор}
+		\label{missclassified}
+	\end{center}
+\end{figure}
+
+
+Видно, что метод опорных векторов с подобранными параметрами на 400 лучших признаках, отобранных с помощью случайного леса, показывает чуть ли не самый высокий результат. Интересно посмотреть, на каких изображений эта модель ошиблась. На рис. \ref{missclassified} представлены как раз такие 4 изображения. Видно, что цифры, на которых ошибся классификатор, действительно похожи на те, которые классификатор предписал данным изображениях.
