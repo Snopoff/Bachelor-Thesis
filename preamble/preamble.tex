@@ -8,6 +8,8 @@
 \usepackage[T2A]{fontenc}			% кодировка
 \usepackage[utf8]{inputenc}			% кодировка исходного текста
 \usepackage[english,russian]{babel}	% локализация и переносы
+\usepackage[style=gost-numeric]{biblatex}
+\addbibresource{outro/resources.bib}
 
 \usepackage{fancyhdr}
 %Numeration top center
@@ -143,4 +145,11 @@ top=2cm,bottom=2cm]{geometry}
 \titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 \titlespacing*{\subsection} {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
-%\renewcommand{\thesection}{\arabic{section}}
+\newcommand\restr[2]{{% we make the whole thing an ordinary symbol
+		\left.\kern-\nulldelimiterspace % automatically resize the bar with \right
+		#1 % the function
+		\vphantom{\big|} % pretend it's a little taller at normal size
+		\right|_{#2} % this is the delimiter
+}}
+
+\DeclareUnicodeCharacter{0301}{\'{e}}
