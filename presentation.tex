@@ -127,14 +127,13 @@
 		\frametitle{Актуальность}
 			\begin{itemize}
 				\item Классификация изображений -- фундаментальная задача анализа данных, одно из основных направлений ее развития, которое в последнее время имеет очень интенсивное развитие, связанное с достижениями нейронных сетей.
-				%\item Несмотря на успех нейронных сетей, они обладают некоторыми недостатками, поэтому имеет смысл искать другие подходы к данной задаче.
-				%\item Топологический анализ данных (ТДА) -- новая область анализа данных, которая использует различные техники из алгебраической топологии -- может предложить новые инструменты, которые могут быть применимы к данной задаче.
 				\item Основным инструментом ТДА являются персистентные гомологии, о которых можно думать как об адаптации понятия гомологии к облаку точек. С помощью такого инструмента можно выявлять топологические характеристики исследуемого объекта.
 				\item Задача классификации по сути является задачей определения характеристических свойств, которым удовлетворяют объекты одного класса. Поэтому персистентные гомологии могут быть полезны в данной задаче, так как зачастую такие свойства имеют геометрическую природу.
 			\end{itemize}
 	\end{frame}
 
 	\section{Теоретические сведения}
+	
 		\subsection{Симплициальные комплексы}
 		\begin{frame}
 			\frametitle{Симплициальные комплексы}
@@ -152,6 +151,16 @@
 				\includegraphics[width=\linewidth]{simplexAndComplex.png}
 			\end{figure}
 		\end{frame}
+		\subsection{Cимплициальные гомологии}
+		\begin{frame}[fragile]
+			\frametitle{Симплициальные гомологии}
+			Для симплициального комплекса можно посчитать его группы симплициальных гомологий $H_n$. Ранк $n$-ой группы -- это $n$-ое число Бетти $\beta_n$. Оно отражает количество $n$-мерных особенностей комплекса. Для $n=0$, $\beta_0$ отражает количество компонент связности данного пространства. При $n=1$ -- количество циклов. При $n=2$ число Бетти $\beta_2$ описывает количество "полостей".
+			
+			\begin{figure}[!htbp]
+				\centering
+				\includegraphics[width=0.5\linewidth, keepaspectratio=true]{betti_numbers.png}
+			\end{figure}
+		\end{frame}
 		\iffalse  %Rips complexes
 		\begin{frame}
 			\frametitle{Симплициальные комплексы}
@@ -163,7 +172,63 @@
 			\end{figure}
 		\end{frame}
 		\fi
-		\subsection{Cимплициальные гомологии}
+		
+		\subsection{Фильтрации и устойчивые гомологии}
+		\begin{frame}
+			\frametitle{Как построить симплициальный комплекс?}
+			
+			Имея облако точек $X \subset \mathbb{R}^n$, можно построить симплициальный комплекс по нему, например комплекс \text{\it Вьеториса—Рипса}.
+			\begin{figure}
+				\centering
+				\includegraphics[scale=0.3]{vr.png}
+			\end{figure}
+		\end{frame}
+		\begin{frame}
+			\frametitle{Фильтрации и устойчивые гомологии}
+			{\it Фильтрацией симплициального комплекса $K$} называют вложенное семейство подкомплексов $ (K_\tau)_{\tau \in T} $, такое, что если $ \tau < \tau^{'} $, то $ K_\tau \subseteq K_{\tau^{'}} $.
+			$n$-ыми устойчивыми гомологиями будем называть семейство $n$-гомологий для каждого члена фильтрации. Естественный порядок на фильтрации будет порождать естественные гомоморфизмы между группами гомологий. Таким образом, устойчивые гомологии отслеживают появление и исчезновение топологических особенностей в фильтрации.
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{filtration.png}
+		\end{figure}
+		\end{frame}
+		\begin{frame}
+			\frametitle{Фильтрации и устойчивые гомологии}
+			\begin{figure}
+				\centering
+				\begin{subfigure}{.45\textwidth}
+					\centering
+					\includegraphics[scale=0.5, width=\linewidth]{persist_diag.png}
+					\caption{Диаграмма персистентности}
+				\end{subfigure}
+				\begin{subfigure}{.45\textwidth}
+					\centering
+					\includegraphics[width=\linewidth]{barcode.png}
+					\caption{Баркод}
+				\end{subfigure}
+				\caption{Способы кодирования информации об персистентных гомологиях}
+			\end{figure}
+		\end{frame}
+		\subsection{Векторизация диаграмм персистентности}
+		\begin{frame}
+			\frametitle{Метрическое пространство всех диаграмм персистентности}
+			На множестве $\mathcal{D}$ диаграмм персистентности можно ввести структуру метрического пространства, однако для большинства алгоритмов машинного обучения и анализа данных требуется более сложная структура.
+			
+			Можно векторизовать диаграмму, т.е. построить отображение $ \varphi: \mathcal{D} \to V $, где $V$ -- нормированное векторное пространство. Тогда диаграмме $B$ можно сопоставить число -- $\norm{\varphi(B)}$.
+			\begin{figure}[!htbp]
+				\centering
+				\begin{subfigure}{0.35\textwidth}
+					\includegraphics[width=\linewidth]{vectorizationImage.png}
+				\end{subfigure}\hfil % <-- added
+				\begin{subfigure}{0.23\textwidth}
+					\includegraphics[width=\linewidth]{betti-curve.png}
+				\end{subfigure}\hfil % <-- added
+				\begin{subfigure}{0.35\textwidth}
+					\includegraphics[width=\linewidth]{persistent_landscape.png}
+				\end{subfigure}
+			\end{figure}
+		\end{frame}
+		\iffalse
 		\begin{frame}[fragile]
 			\frametitle{Симплициальные гомологии}
 			Рассмотрим свободную абелеву группу $C_k(K)$ $k\text{-цепей}$ симплициального комплекса $K$ и гомоморфизм $\partial_k : C_k(K) \to C_{k-1}(K)$ называют {\it граничным оператором}. Он удовлетворяет следующему свойству:
@@ -301,7 +366,7 @@
 				E(B) = - \sum\limits_{i \in I} p_i \log(p_i), \text{ где $p_i = \dfrac{d_i - b_i}{\sum\limits_{i \in I}d_i-b_i}$. }
 			\]
 		\end{frame}
-	
+		\fi
 	\section{Алгоритм классификации}
 		\subsection{Алгоритм построения векторного представления}
 		\begin{frame}
@@ -314,7 +379,7 @@
 		\end{frame}
 		\begin{frame}
 			\frametitle{Пайплайн используемого метода построения векторного представления}
-			Построить фильтрацию для изображения можно различными методами. В настоящей работе было построено 17 разнообразных фильтрацией, для каждой из которых были получены $0$ и $1$ персистентные гомологии, из диаграмм которых было получено 14 признаков. Таким образом, для одной картинки было получено $17 \times 2 \times 14 = 476$ признаков.
+			Построить фильтрацию для изображения можно различными методами. В настоящей работе было построено 20 разнообразных фильтрацией, для каждой из которых были получены $0$ и $1$ персистентные гомологии, из диаграмм которых было получено 14 признаков. Таким образом, для одной картинки было получено $20 \times 2 \times 14 = 560$ признаков.
 			\begin{figure}
 				\centering
 				\includegraphics[width=\linewidth]{pipelineDiagram.png}
@@ -333,19 +398,21 @@
 			\begin{center}
 				\begin{table}[!htbp]
 					\centering
-					\begin{tabular}{ |c|c| }
+					\small
+					\begin{tabularx}{\linewidth}{|X|X|X|}
 						\hline
-						Модель & Точность на тестовой выборке \\ 
+						Название модели & Значение на тренировочной выборке & Значение на тестовой выборке\\ \hline
+						Логистическая регрессия & 0.989 & 0.903 \\
+						\hline 
+						Метод опорных векторов & 1.0 & 0.893 \\
 						\hline
-						Случайный лес & $0.88$  \\ 
-						Логистическая регрессия & $0.9$ \\ 
-						Метод опорных векторов & $0.88$  \\
-						LightGBM & $0.86$ \\
-						CatBoost & $0.88$ \\
-						XGBoost & $0.88$  \\
+						Случайный лес & 1.0 & 0.89 \\
 						\hline
-					\end{tabular}
-					\caption{Сравнение результатов различных методов машинного обучения}
+						CatBoost & 1.0 & 0.893 \\ 
+						\hline
+					\end{tabularx}
+					\caption{Значения базовых моделей на тренировочной и тестовой выборках}	
+					\label{tabl:baselines}
 				\end{table}
 			\end{center}
 		\end{frame}
@@ -354,40 +421,76 @@
 			\begin{center}
 				\begin{table}[!htbp]
 					\centering
-					\begin{tabular}{ |c|c| }
+					\small
+					\begin{tabularx}{\linewidth}{|X|X|X|}
 						\hline
-						Модель & Точность на тестовой выборке \\ 
+						Название модели & Значение на тренировочной выборке & Значение на тестовой выборке\\ \hline
+						Логистическая регрессия & 0.911 & 0.917 \\
+						\hline 
+						Метод опорных векторов & 0.903 & 0.893 \\
 						\hline
-						Случайный лес & $0.88$  \\ 
-						Логистическая регрессия & $0.9$ \\ 
-						Метод опорных векторов & $0.9$  \\
-						LightGBM & $0.88$ \\
-						CatBoost & $0.89$ \\
-						XGBoost & $0.89$  \\
+						Случайный лес & 0.89 & 0.89 \\
 						\hline
-					\end{tabular}
-					\caption{Сравнение результатов различных методов машинного обучения с подобранными гиперпараметрами}
+						CatBoost & 0.905 & 0.9 \\ 
+						\hline
+					\end{tabularx}
+					\caption{Значения наилучших моделей, полученных в результате подбора параметров поиском по сетке, на тренировочной и тестовой выборках}	
+					\label{tabl:gridsearch}
 				\end{table}
 			\end{center}
 		\end{frame}
 		\begin{frame}
 			\frametitle{Подбор гиперпараметров и отбор признаков}
-			\begin{figure}[t]
-				\centering
-				\begin{subfigure}{.45\textwidth}
-					\centering
-					\includegraphics[scale=0.5, width=\linewidth]{accuraciesNumFeatures.png}
-					\caption*{График зависимости точности на обучающей выборке и числа признаков}
+			\begin{figure}[!htbp]
+				\centering % <-- added
+				\begin{subfigure}{0.25\textwidth}
+					\includegraphics[width=\linewidth]{log_diff_features_train.png}
+					\caption{Логистическая регрессия на тренировочной выборке}
+					\label{fig:1}
+				\end{subfigure}\hfil % <-- added
+				\begin{subfigure}{0.25\textwidth}
+					\includegraphics[width=\linewidth]{svm_diff_features_train.png}
+					\caption{Метод опорных векторов на тренировочной выборке}
+					\label{fig:2}
+				\end{subfigure}\hfil % <-- added
+				\begin{subfigure}{0.25\textwidth}
+					\includegraphics[width=\linewidth]{rf_diff_features_train.png}
+					\caption{Случайный лес на тренировочной выборке}
+					\label{fig:3}
 				\end{subfigure}
-				\begin{subfigure}{.45\textwidth}
-					\centering
-					\includegraphics[width=\linewidth]{scoresNumFeatures.png}
-					\caption*{График зависимости точности на валидационной выборке и числа признаков}
+				
+				\begin{subfigure}{0.25\textwidth}
+					\includegraphics[width=\linewidth]{log_diff_features_test.png}
+					\caption{Логистическая регрессия на тестовой выборке}
+					\label{fig:4}
+				\end{subfigure}\hfil % <-- added
+				\begin{subfigure}{0.25\textwidth}
+					\includegraphics[width=\linewidth]{svm_diff_features_test.png}
+					\caption{Метод опорных векторов на тестовой выборке}
+					\label{fig:5}
+				\end{subfigure}\hfil % <-- added
+				\begin{subfigure}{0.25\textwidth}
+					\includegraphics[width=\linewidth]{rf_diff_features_test.png}
+					\caption{Случайный лес на тестовой выборке}
+					\label{fig:6}
 				\end{subfigure}
+				\caption{Сравнение различных моделей, которые используют различные признаки}
+				\label{accuracies_diff_features}
 			\end{figure}
 		\end{frame}
-	
+		\begin{frame}
+			\frametitle{Первые несколько изображений, на которых ошибся классификатор}
+			\begin{figure}[!htbp]
+				\begin{center}
+					\includegraphics[width=0.5\textwidth]{missclassified.png}\\
+					%\caption{Первые несколько изображений, на которых ошибся классификатор}
+					\label{missclassified}
+				\end{center}
+			\end{figure}
+		\end{frame}
+		
 	\section{Заключение}
+	\iffalse
 		\subsection{Что осталось сделать?}
 		\begin{frame}
 			\frametitle{Что осталось сделать?}
@@ -399,7 +502,18 @@
 				\item Попробовать обучить модели на полном датасете. Вероятно тут нужно будет использовать батчи для создания векторного представления. Можно будет попробовать связанные с этим трюки в духе batch normalization.  
 			\end{itemize}
 		\end{frame}
+	\fi
 		\subsection{Заключение}
+		\begin{frame}
+			\frametitle{Заключение}
+			\begin{itemize}
+				\item В ходе данной работы был изучен теоретический материал по алгебраической и прикладной топологии и машинному обучению. 
+				\item Был реализован алгоритм классификации датасета MNIST, используя только топологические свойства изображенных рукописных цифр, который выдавал высокий уровень точности.
+				
+				\item В ходе данной работы было выявлено, что реализованный алгоритм является эффективным алгоритмом понижения размерности пространства признаков. 
+				\item Было проведено сравнение с другими моделями машинного обучения, в результате которого было обнаружено, что реализованный алгоритм показывает более высокую точность классификации при меньшем числе признаков.
+			\end{itemize}
+		\end{frame}
 		\begin{frame}
 			\centering
 			
