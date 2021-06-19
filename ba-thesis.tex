@@ -1,5 +1,5 @@
 \input{preamble/preamble}
-%\input{preamble/biblatex}
+%input{preamble/biblatex}
 
 \begin{document}
 	\input{titlepage/titlepage}
@@ -12,7 +12,8 @@
 	
 	\input{outro/outro}
 	
-	\addcontentsline{toc}{chapter}{Список используемых источников}
+	\newpage  
 	\nocite{*}
+	\addcontentsline{toc}{chapter}{Список используемых источников}
 	\printbibliography[title={Список используемых источников}]
 \end{document}

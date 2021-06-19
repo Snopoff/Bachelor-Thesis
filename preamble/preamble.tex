@@ -9,6 +9,7 @@
 \usepackage[utf8]{inputenc}			% кодировка исходного текста
 \usepackage[english,russian]{babel}	% локализация и переносы
 \usepackage[style=gost-numeric]{biblatex}
+%\bibliographystyle{ugost2008.bst}
 \addbibresource{outro/resources.bib}
 
 \usepackage{fancyhdr}
@@ -41,7 +42,9 @@
 \usetikzlibrary{babel}
 %Adds "References" to the table of contents
 \usepackage[nottoc]{tocbibind} 
-
+\usepackage{tocloft}
+\renewcommand\cftchapfont{\mdseries}
+\renewcommand\cftchappagefont{\mdseries}
 % abs and norm 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}%
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}%
@@ -124,16 +127,16 @@ top=2cm,bottom=2cm]{geometry}
 
 \newcommand{\chapfnt}{\fontsize{16}{19}}
 \newcommand{\secfnt}{\fontsize{14}{17}}
-\newcommand{\ssecfnt}{\fontsize{12}{14}}
+\newcommand{\ssecfnt}{\fontsize{14}{14}}
 
 \titleformat{\chapter}%[display]
 {\normalfont\chapfnt\bfseries}{\thechapter}{24pt}{\chapfnt}
 %{\normalfont\chapfnt\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\chapfnt}
 
 \titleformat{\section}
-{\normalfont\bfseries}{\thesection.}{1em}{}
+{\normalfont\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}
-{\small\bfseries}{\thesubsection}{1em}{}
+{\normalfont\bfseries}{\thesubsection}{1em}{}
 
 %\titleformat{\section}
 %{\normalfont\secfnt\bfseries}{\thesection}{1em}{}
