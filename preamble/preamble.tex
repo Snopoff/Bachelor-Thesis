@@ -115,10 +115,9 @@ eprint=false
 \usepackage[left=3cm,right=1.5cm,
 top=2cm,bottom=2cm]{geometry}
 
-\newcommand{\changefont}{%
-	\fontsize{14}{16}\selectfont
-}
-
+%\newcommand{\changefont}{%
+%	\fontsize{14}{16}\selectfont
+%}
 %\usepackage{fancyhdr}
 %\fancypagestyle{plain}{%
 %	\fancyhf{} % clear all header and footer fields
@@ -159,7 +158,7 @@ top=2cm,bottom=2cm]{geometry}
 \newcommand{\secfnt}{\fontsize{14}{17}}
 \newcommand{\ssecfnt}{\fontsize{14}{14}}
 
-\titleformat{\chapter}%[display]
+\titleformat{\chapter}
 {\normalfont\chapfnt\bfseries\filcenter}{\thechapter}{24pt}{\chapfnt}
 %{\normalfont\chapfnt\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\chapfnt}
 
@@ -168,8 +167,8 @@ top=2cm,bottom=2cm]{geometry}
 \titleformat{\subsection}
 {\normalfont\bfseries\filcenter}{\thesubsection}{1em}{}
 
-\titlespacing*{\chapter} {0pt}{50pt}{40pt}
-\titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\chapter}{0pt}{10pt}{40pt}
+\titlespacing*{\section} {0pt}{10pt}{2.3ex plus .2ex}
 \titlespacing*{\subsection} {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
 \newcommand\restr[2]{{% we make the whole thing an ordinary symbol
@@ -204,3 +203,10 @@ top=2cm,bottom=2cm]{geometry}
 	numbersep=5pt, % this defines how far the numbers are from the text
 	emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
 }
+
+\captionsetup[figure]{labelsep=period}
+\captionsetup[figure]{justification=centering}
+\captionsetup[table]{labelsep=period}
+\captionsetup[table]{position=t,justification=raggedleft,slc=off}
+
+\setlength{\textfloatsep}{10pt}
