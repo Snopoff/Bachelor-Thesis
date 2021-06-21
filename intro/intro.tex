@@ -1,17 +1,18 @@
-\renewcommand{\@makecaption}[2]{
-	\vspace{\abovecaptionskip}
-	\sbox{\@tempboxa}{#1. #2}
-	\ifdim \wd\@tempboxa >\hsize
-	#1. #2\par
-	\else
-	\global\@minipagefalse
-	\hbox to \hsize {\hfil #1. #2\hfil}
-	\fi
-	\vspace{\belowcaptionskip}
-}
+%\renewcommand{\@makecaption}[2]{
+%	\vspace{\abovecaptionskip}
+%	\sbox{\@tempboxa}{#1. #2}
+%	\ifdim \wd\@tempboxa >\hsize
+%	#1. #2\par
+%	\else
+%	\global\@minipagefalse
+%	\hbox to \hsize {\hfil #1. #2\hfil}
+%	\fi
+%	\vspace{\belowcaptionskip}
+%}
 
 %\input{intro/abstract}
 
+\setcounter{page}{2}
 \renewcommand{\contentsname}{\hfill Содержание\hfill}
 \renewcommand{\cftaftertoctitle}{\hfill}
 \tableofcontents

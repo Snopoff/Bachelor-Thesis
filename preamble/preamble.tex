@@ -8,8 +8,29 @@
 \usepackage[T2A]{fontenc}			% кодировка
 \usepackage[utf8]{inputenc}			% кодировка исходного текста
 \usepackage[english,russian]{babel}	% локализация и переносы
-\usepackage[style=gost-numeric]{biblatex}
+%\usepackage[style=gost-numeric]{biblatex}
 %\bibliographystyle{ugost2008.bst}
+
+%%% Реализация библиографии пакетами biblatex и biblatex-gost с использованием движка biber %%%
+
+\usepackage{csquotes} % biblatex рекомендует его подключать. Пакет для оформления сложных блоков цитирования.
+	\usepackage[%
+backend=biber,% движок
+bibencoding=utf8,% кодировка bib файла
+sorting=none,% настройка сортировки списка литературы
+style=gost-numeric,% стиль цитирования и библиографии (по ГОСТ)
+language=autobib,% получение языка из babel/polyglossia, default: autobib % если ставить autocite или auto, то цитаты в тексте с указанием страницы, получат указание страницы на языке оригинала
+autolang=other,% многоязычная библиография
+clearlang=true,% внутренний сброс поля language, если он совпадает с языком из babel/polyglossia
+sortcites=true,% сортировать номера затекстовых ссылок при цитировании (если в квадратных скобках несколько ссылок, то отображаться будут отсортированно, а не абы как)
+doi=false,% Показывать или нет ссылки на DOI
+isbn=false,% Показывать или нет ISBN, ISSN, ISRN
+eprint=false
+]{biblatex}[2016/09/17]
+\renewcommand*{\mkbibhdnamefamily}[1]{#1}
+\renewcommand*{\newblockpunct}{\addperiod\addnbspace\cyrdash\space\bibsentence}
+%%%END
+
 \addbibresource{outro/resources.bib}
 
 \usepackage{fancyhdr}
@@ -93,7 +114,7 @@
 \textheight=235mm
 \footskip=10mm
 \fi
-\parindent=12.5mm
+%\parindent=12.5mm
 \setlength{\parindent}{12.5mm}
 \usepackage{indentfirst}
 \linespread{1.5}
@@ -103,8 +124,8 @@ top=2cm,bottom=2cm]{geometry}
 
 \pagestyle{myheadings}
 \makeatletter
-\renewcommand{\@oddhead}{}
-\renewcommand{\@oddfoot}{\hfil\thepage\hfil}
+\renewcommand{\@oddfoot}{}
+\renewcommand{\@oddhead}{\hfil\thepage\hfil}
 
 \newtheorem{definition}{Определение}
 \newtheorem*{theorem*}{Теорема}
@@ -130,19 +151,13 @@ top=2cm,bottom=2cm]{geometry}
 \newcommand{\ssecfnt}{\fontsize{14}{14}}
 
 \titleformat{\chapter}%[display]
-{\normalfont\chapfnt\bfseries}{\thechapter}{24pt}{\chapfnt}
+{\normalfont\chapfnt\bfseries\filcenter}{\thechapter}{24pt}{\chapfnt}
 %{\normalfont\chapfnt\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\chapfnt}
 
 \titleformat{\section}
-{\normalfont\bfseries}{\thesection}{1em}{}
+{\normalfont\bfseries\filcenter}{\thesection}{1em}{}
 \titleformat{\subsection}
-{\normalfont\bfseries}{\thesubsection}{1em}{}
-
-%\titleformat{\section}
-%{\normalfont\secfnt\bfseries}{\thesection}{1em}{}
-
-%\titleformat{\subsection}
-%{\normalfont\ssecfnt\bfseries}{\thesubsection}{1em}{}
+{\normalfont\bfseries\filcenter}{\thesubsection}{1em}{}
 
 \titlespacing*{\chapter} {0pt}{50pt}{40pt}
 \titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
@@ -154,5 +169,3 @@ top=2cm,bottom=2cm]{geometry}
 		\vphantom{\big|} % pretend it's a little taller at normal size
 		\right|_{#2} % this is the delimiter
 }}
-
-\DeclareUnicodeCharacter{0301}{\'{e}}
