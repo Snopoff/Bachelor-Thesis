@@ -28,16 +28,19 @@ isbn=false,% Показывать или нет ISBN, ISSN, ISRN
 eprint=false
 ]{biblatex}[2016/09/17]
 \renewcommand*{\mkbibhdnamefamily}[1]{#1}
+\renewcommand*{\multicitedelim}{\addcomma\space}
 \renewcommand*{\newblockpunct}{\addperiod\addnbspace\cyrdash\space\bibsentence}
+\DeclareSourcemap{
+	\maps{
+	\map[overwrite]{ % переделка формата записи даты
+	\step[fieldsource=urldate,
+	match=\regexp{([0-9]{2})\.([0-9]{2})\.([0-9]{4})},
+	replace={$3-$2-$1$4}, % $4 вставлен исключительно ради нормальной работы программ подсветки синтаксиса, которые некорректно обрабатывают $ в таких конструкциях
+	final]
+}}}
 %%%END
 
 \addbibresource{outro/resources.bib}
-
-\usepackage{fancyhdr}
-%Numeration top center
-\fancyhf{}
-\fancyhead[C]{\thepage}
-\pagestyle{fancy}
 
 \usepackage{lipsum}
 \usepackage{etoolbox}
@@ -103,17 +106,7 @@ eprint=false
 
 % hyper refs
 \usepackage{hyperref}
-\iffalse
-\hoffset=-5.4mm
-\oddsidemargin=0mm
-\textwidth=180mm
-\voffset=-5.4mm
-\topmargin=0mm
-\headheight=5mm
-\headsep=7mm
-\textheight=235mm
-\footskip=10mm
-\fi
+
 %\parindent=12.5mm
 \setlength{\parindent}{12.5mm}
 \usepackage{indentfirst}
@@ -122,10 +115,26 @@ eprint=false
 \usepackage[left=3cm,right=1.5cm,
 top=2cm,bottom=2cm]{geometry}
 
+\newcommand{\changefont}{%
+	\fontsize{14}{16}\selectfont
+}
+
+%\usepackage{fancyhdr}
+%\fancypagestyle{plain}{%
+%	\fancyhf{} % clear all header and footer fields
+%	\fancyhead[C]{\changefont\thepage} % except the center
+%}
+%\renewcommand{\headrulewidth}{0pt}
+
+\AtBeginDocument{\renewpagestyle{plain}{\sethead{}{\thepage}{}}}
+
 \pagestyle{myheadings}
 \makeatletter
 \renewcommand{\@oddfoot}{}
 \renewcommand{\@oddhead}{\hfil\thepage\hfil}
+\renewcommand{\@evenfoot}{}
+\renewcommand{\@evenhead}{\hfil\thepage\hfil}
+\makeatother
 
 \newtheorem{definition}{Определение}
 \newtheorem*{theorem*}{Теорема}
@@ -169,3 +178,29 @@ top=2cm,bottom=2cm]{geometry}
 		\vphantom{\big|} % pretend it's a little taller at normal size
 		\right|_{#2} % this is the delimiter
 }}
+
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage[toc, page]{appendix}
+\renewcommand{\appendixname}{Приложение}
+\renewcommand{\appendixpagename}{Приложение}
+\renewcommand{\appendixtocname}{Приложение}
+\usepackage{listingsutf8}
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+\lstset{language=python,%
+	basicstyle=\linespread{0.8}\ttfamily\footnotesize, %
+	breaklines=true,%
+	morekeywords={matlab2tikz},
+	extendedchars=\true,
+	keywordstyle=\color{blue},%
+	morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+	identifierstyle=\color{black},%
+	stringstyle=\color{mylilas},
+	commentstyle=\color{mygreen},%
+	showstringspaces=false,%without this there will be a symbol in the places where there is a space
+	numbers=left,%
+	numberstyle={\tiny \color{black}},% size of the numbers
+	numbersep=5pt, % this defines how far the numbers are from the text
+	emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+}
