@@ -13,6 +13,7 @@
 \usepackage{wrapfig} % Обтекание рисунков и таблиц текстом
 \usepackage[export]{adjustbox}
 \usepackage{caption}
+\captionsetup[figure]{labelsep=space}
 \usepackage{subcaption}
 \usepackage{float}
 \usepackage{tikz-cd}
@@ -20,11 +21,40 @@
 \usepackage{animate}
 \usepackage{tabularx}
 
+\usepackage{csquotes} % biblatex рекомендует его подключать. Пакет для оформления сложных блоков цитирования.
+\usepackage[%
+backend=biber,% движок
+bibencoding=utf8,% кодировка bib файла
+sorting=none,% настройка сортировки списка литературы
+style=gost-numeric,% стиль цитирования и библиографии (по ГОСТ)
+language=autobib,% получение языка из babel/polyglossia, default: autobib % если ставить autocite или auto, то цитаты в тексте с указанием страницы, получат указание страницы на языке оригинала
+autolang=other,% многоязычная библиография
+clearlang=true,% внутренний сброс поля language, если он совпадает с языком из babel/polyglossia
+sortcites=true,% сортировать номера затекстовых ссылок при цитировании (если в квадратных скобках несколько ссылок, то отображаться будут отсортированно, а не абы как)
+doi=false,% Показывать или нет ссылки на DOI
+isbn=false,% Показывать или нет ISBN, ISSN, ISRN
+eprint=false
+]{biblatex}
+\renewcommand*{\mkbibhdnamefamily}[1]{#1}
+\renewcommand*{\multicitedelim}{\addcomma\space}
+\renewcommand*{\newblockpunct}{\addperiod\addnbspace\cyrdash\space\bibsentence}
+\DeclareSourcemap{
+	\maps{
+		\map[overwrite]{ % переделка формата записи даты
+			\step[fieldsource=urldate,
+			match=\regexp{([0-9]{2})\.([0-9]{2})\.([0-9]{4})},
+			replace={$3-$2-$1$4}, % $4 вставлен исключительно ради нормальной работы программ подсветки синтаксиса, которые некорректно обрабатывают $ в таких конструкциях
+			final]
+}}}
+\addbibresource{author.bib}
+\renewcommand*{\bibfont}{\small}
+%%%END
+
 %Algorithms
 %http://blog.harrix.org/article/648
-\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[vlined, ruled]{algorithm2e}
 
-\SetKwInput{KwData}{Исходные параметры}
+\SetKwInput{KwData}{Исходные данные}
 \SetKwInput{KwResult}{Результат}
 \SetKwInput{KwIn}{Входные данные}
 \SetKwInput{KwOut}{Выходные данные}
@@ -36,7 +66,7 @@
 \SetKwBlock{Begin}{начало блока}{конец блока}
 \SetKwSwitch{Switch}{Case}{Other}{Проверить значение}{и выполнить}{вариант}{в противном случае}{конец варианта}{конец проверки значений}
 \SetKwFor{For}{цикл}{выполнять}{конец цикла}
-\SetKwFor{ForEach}{для каждого}{выполнять}{конец цикла}
+\SetKwFor{ForEach}{Для каждой}{выполнять}{Конец цикла}
 \SetKwRepeat{Repeat}{повторять}{до тех пор, пока}
 \SetAlgorithmName{Алгоритм}{алгоритм}{Список алгоритмов}
 
@@ -101,15 +131,45 @@
 		\begin{beamercolorbox}[sep=8pt,center,colsep=-4bp,rounded=true,shadow=true]{author}
 			\usebeamerfont{author}\insertauthor
 		\end{beamercolorbox}
-		
+		\note{Здравствуйте, уважаемая комиссия! Меня зовут Снопов Павел, мой научный руководитель -- Леденева Татьяна Михайловна, тема моей бакалаврской работы -- применение персистентных гомологий для задачи классификации изображений.}
 	\end{frame}
 	\footnotesize
 	\section{Введение}
-		\subsection{Содержание}	
-	\begin{frame}
-		\frametitle{Содержание}
-		\tableofcontents
-	\end{frame}
+	
+	\subsection{Актуальность}	
+		\begin{frame}
+			\frametitle{Актуальность}
+			\begin{itemize}
+				\item Классификация изображений -- фундаментальная задача анализа данных, одно из основных направлений приложения машинного обучения к компьютерному зрению.%, которое в последнее время имеет очень интенсивное развитие, связанное с достижениями нейронных сетей.
+				\item Машинное обучение -- главный тренд последних 10 лет($\sim 150$ публ./день).
+				\item Устойчивые гомологии и топологический анализ данных -- недавно возникшая и быстро развивающаяся область современной математики и анализа данных.
+			\end{itemize}
+			\note{Несколько слов об актуальности: ...}
+		\end{frame}
+	
+		\subsection{Постановка задачи}
+		\begin{frame}
+			\frametitle{Постановка задачи}
+			\begin{columns}[] % align columns
+				\begin{column}{.5\textwidth}
+				\begin{itemize}
+					\item Задано конечное множество объектов вместе с метками классов. 
+					\item Метки классов остальных объектов не известны. 
+					\item Требуется построить алгоритм, способный классифицировать произвольный объект из исходного множества.
+				\end{itemize}
+				\end{column}%
+			\hfill%
+				\begin{column}{.49\textwidth}
+					\begin{figure}
+						\centering
+						\includegraphics[width=0.6\linewidth]{mnist_example.png}
+						\caption{Пример изображения из датасета MNIST}
+					\end{figure}
+				\end{column}%
+			\end{columns}
+		\note{Имеется следующая задача: задано конечное множество объектов вместе с метками класса, а также заданы объекты без меток класса. Необходимо построить алгоритм, способный классифицировать объект исходного множества.}
+		\end{frame}
+	
 		\subsection{Цель и задачи работы}
 		\begin{frame}
 		\frametitle{Цель и задачи работы}
@@ -121,112 +181,120 @@
 				\item Формирование алгоритма на основе персистентных гомологий
 				\item Проведение вычислительного эксперимента, выявление области применимости, плюсов и минусов данного подхода
 			\end{itemize}
+		\note{Цель: ..., задачи представлены на слайде}
 		\end{frame}
-		\subsection{Актуальность}	
-		\begin{frame}
-		\frametitle{Актуальность}
-			\begin{itemize}
-				\item Классификация изображений -- фундаментальная задача анализа данных, одно из основных направлений ее развития, которое в последнее время имеет очень интенсивное развитие, связанное с достижениями нейронных сетей.
-				\item Основным инструментом ТДА являются персистентные гомологии, о которых можно думать как об адаптации понятия гомологии к облаку точек. С помощью такого инструмента можно выявлять топологические характеристики исследуемого объекта.
-				\item Задача классификации по сути является задачей определения характеристических свойств, которым удовлетворяют объекты одного класса. Поэтому персистентные гомологии могут быть полезны в данной задаче, так как зачастую такие свойства имеют геометрическую природу.
-			\end{itemize}
-	\end{frame}
 
 	\section{Теоретические сведения}
 	
 		\subsection{Симплициальные комплексы}
 		\begin{frame}
 			\frametitle{Симплициальные комплексы}
-			
-			\begin{definition}
-				Симплициальный комплекс $K$ -- это множество симплексов, т.е. выпуклых оболочек набора $n+1$ точек $\in \mathbb{R}^p$, таких, что векторы $ x_1 - x_0, ..., x_n - x_0 $ линейно независимы, при этом
+
+				{\it Симплициальный комплекс $K$} -- это множество симплексов, т.е. выпуклых оболочек набора $n+1$ точек $\in \mathbb{R}^p$, таких, что векторы $ x_1 - x_0, ..., x_n - x_0 $ линейно независимы, при этом
 				\begin{itemize}
 					\setlength{\itemsep}{-1mm}
 					\item Для каждого симплекса из $K$ его грани тоже лежат в $K$,
 					\item Пересечение любых двух симплексов $\sigma, \tau \in K$ либо пусто, либо является гранью и $\sigma$, и $\tau$.
 				\end{itemize}
-			\end{definition}
 			\begin{figure}
 				\centering
 				\includegraphics[width=\linewidth]{simplexAndComplex.png}
 			\end{figure}
+		\note{Основной объект в ТДА -- симплициальный комплекс. С.К. -- это множество правильно склеенных между собой симплексов, симплекс же -- это обобщение треугольника на большие размерности, например тетраэдр -- это симплекс.}
 		\end{frame}
 		\subsection{Cимплициальные гомологии}
 		\begin{frame}[fragile]
 			\frametitle{Симплициальные гомологии}
-			Для симплициального комплекса можно посчитать его группы симплициальных гомологий $H_n$. Ранк $n$-ой группы -- это $n$-ое число Бетти $\beta_n$. Оно отражает количество $n$-мерных особенностей комплекса. Для $n=0$, $\beta_0$ отражает количество компонент связности данного пространства. При $n=1$ -- количество циклов. При $n=2$ число Бетти $\beta_2$ описывает количество "полостей".
+			{\it Группа симплициальных гомологий $H_n(K)$} размерности $n$ отражает количество {$n$-циклов}. Ранг данной группы -- {\it $n$-ое число Бетти} $\beta_n$ -- количество $n$-циклов.
+			\[
+				\beta_n = \mathrm{dim}(H_n(K))
+			\]
+			%Для симплициального комплекса можно посчитать его группы симплициальных гомологий $H_n$. Ранк $n$-ой группы -- это $n$-ое число Бетти $\beta_n$. Оно отражает количество $n$-мерных особенностей комплекса. Для $n=0$, $\beta_0$ отражает количество компонент связности данного пространства. При $n=1$ -- количество циклов. При $n=2$ число Бетти $\beta_2$ описывает количество "полостей".
 			
 			\begin{figure}[!htbp]
 				\centering
-				\includegraphics[width=0.5\linewidth, keepaspectratio=true]{betti_numbers.png}
+				\includegraphics[width=\linewidth, keepaspectratio=true]{betti_numbers.png}
 			\end{figure}
+		\note{Для симплициального комплекса можно найти его группу $n$ симплициальных гомологий. Эта группа, а точнее ее ранг, число Бетти, характеризует количество $n$-циклов. При $n=0$ -- это количество компонент связности, $n=1$ -- количество циклов, как в теории графов и тд}
 		\end{frame}
 		
 		\subsection{Фильтрации и устойчивые гомологии}
 		\begin{frame}
 			\frametitle{Как построить симплициальный комплекс?}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.6\linewidth, keepaspectratio=true]{vr.png}
+			\end{figure}
+		\note{Мы рассматриваем окрестность в каждой точке и смотрим, как окрестности пересекаются. Если n окрестностей пересекаются, то на соответствующие n точек натягиваем n-симплекс}
+		\end{frame}
+		\begin{frame}
+			\frametitle{Фильтрации и устойчивые гомологии}
+			{\it Фильтрация} -- коллекция комплексов. 
 			
-			Имея облако точек $X \subset \mathbb{R}^n$, можно построить симплициальный комплекс по нему, например комплекс \text{\it Вьеториса—Рипса}.
+			{\it Устойчивые гомологии} -- коллекция групп гомологий комплексов фильтрации.
 			\begin{figure}
 				\centering
-				\includegraphics[scale=0.3]{vr.png}
-			\end{figure}
-		\end{frame}
-		\begin{frame}
-			\frametitle{Фильтрации и устойчивые гомологии}
-			{\it Фильтрацией симплициального комплекса $K$} называют вложенное семейство подкомплексов $ (K_\tau)_{\tau \in T} $, такое, что если $ \tau < \tau^{'} $, то $ K_\tau \subseteq K_{\tau^{'}} $.
-			$n$-ыми устойчивыми гомологиями будем называть семейство $n$-гомологий для каждого члена фильтрации. Естественный порядок на фильтрации будет порождать естественные гомоморфизмы между группами гомологий. Таким образом, устойчивые гомологии отслеживают появление и исчезновение топологических особенностей в фильтрации.
-			\begin{figure}
-				\centering
-				\includegraphics[width=\linewidth]{filtration.png}
+				\includegraphics[width=\linewidth]{filtrationAyzenberg.png}
 		\end{figure}
+		\note{Радиусы шаров можно менять и получать (вообще говоря) разные комплексы. Это называют фильтрацией. Устойчивыми гомологиями называют набор гомологий для каждого комплекса в фильтрации. Внизу изображен баркод -- способ представления информации об устойчивых гомологиях. Баркод содержит отрезки, которые начинаются в тот момент времени, когда появился соответствующий цикл, и закачиваются тогда, когда соответствующий цикл исчез.}
 		\end{frame}
 		\begin{frame}
 			\frametitle{Фильтрации и устойчивые гомологии}
 			\begin{figure}
 				\centering
-				\begin{subfigure}{.45\textwidth}
-					\centering
-					\includegraphics[scale=0.5, width=\linewidth]{persist_diag.png}
-					\caption{Диаграмма персистентности}
-				\end{subfigure}
-				\begin{subfigure}{.45\textwidth}
-					\centering
-					\includegraphics[width=\linewidth]{barcode.png}
-					\caption{Баркод}
-				\end{subfigure}
-				\caption{Способы кодирования информации об персистентных гомологиях}
+				\includegraphics[width=0.6\linewidth]{persist_diag.png}
+				\caption{Диаграмма персистентности}
 			\end{figure}
+				\note{Данную информацию можно представлять и другим способом -- в качестве т.н. диаграммы персистентности. Ось абсцисс -- время появления цикла, ось ординат -- время ее исчезновения. Таким образом каждая точка на диаграмме соответсвует некоторому циклу -- это как раз та информация, которую хотелось бы извлечь.}
 		\end{frame}
 		\subsection{Векторизация диаграмм персистентности}
 		\begin{frame}
-			\frametitle{Метрическое пространство всех диаграмм персистентности}
-			На множестве $\mathcal{D}$ диаграмм персистентности можно ввести структуру метрического пространства, однако для большинства алгоритмов машинного обучения и анализа данных требуется более сложная структура.
+			\frametitle{Векторизация диаграмм персистентности}
+			Диаграммы устойчивости с данной метрикой образуют метрическое пространство $\mathcal{D}$:
+			\[
+			W_p(B, B^{'}) = \inf\limits_{\gamma:B\to B^{'}} 
+			\big( 
+			\sum\limits_{u \in B} \norm{u - \gamma(u)}_\infty^p
+			\big) ^{\frac{1}{p}}.
+			\]
 			
-			Можно векторизовать диаграмму, т.е. построить отображение $ \varphi: \mathcal{D} \to V $, где $V$ -- нормированное векторное пространство. Тогда диаграмме $B$ можно сопоставить число -- $\norm{\varphi(B)}$.
-			\begin{figure}[!htbp]
+			%На множестве $\mathcal{D}$ диаграмм персистентности можно ввести структуру метрического пространства, однако для большинства алгоритмов машинного обучения и анализа данных требуется более сложная структура.
+			
+			%Можно векторизовать диаграмму, т.е. построить отображение $ \varphi: \mathcal{D} \to V $, где $V$ -- нормированное векторное пространство. Тогда диаграмме $B$ можно сопоставить число -- $\norm{\varphi(B)}$.
+			{\it Векторизация диаграмм} -- это отображение $ \varphi: \mathcal{D} \to V $, где $V$ -- нормированное векторное пространство.
+			\begin{figure}
 				\centering
-				\begin{subfigure}{0.35\textwidth}
-					\includegraphics[width=\linewidth]{vectorizationImage.png}
-				\end{subfigure}\hfil % <-- added
-				\begin{subfigure}{0.23\textwidth}
-					\includegraphics[width=\linewidth]{betti-curve.png}
-				\end{subfigure}\hfil % <-- added
-				\begin{subfigure}{0.35\textwidth}
-					\includegraphics[width=\linewidth]{persistent_landscape.png}
-				\end{subfigure}
+				\includegraphics[width=0.5\linewidth]{persistent_landscape.png}
+				\caption{График некоторой векторизации}
 			\end{figure}
+		\note{К сожалению, нельзя просто взять, и использовать методы машинного обучения на диаграмм устойчивости. Множество диаграмм образуют метрическое пространство, но многие модели требуют более сложную структуру. Поэтому, для того, чтобы использовать топологическую информацию, стараются сопоставить диаграмме некоторый вектор из нормированного пространства. Это называется векторизацией. Причем важно, чтобы векторизация была устойчива: чтобы небольшое изменение на диаграмме приводило к небольшому изменению вектора. Тогда, взяв норму вектора, можно сопоставить диаграмме некоторое число.}
 		\end{frame}
 	\section{Алгоритм классификации}
 		\subsection{Алгоритм построения векторного представления}
 		\begin{frame}
-			\frametitle{Общая идея алгоритма}
-			\begin{itemize}
-				\item По изображению строим фильтрацию;
-				\item По построенной фильтрации находим кубический комплекс, персистентные гомологии и строим диаграмму устойчивости;
-				\item Векторизуем диаграмму устойчивости, получаем векторное представление, которое можно использовать в моделях машинного обучения.
-			\end{itemize}
+			%Построить фильтрацию для изображения можно различными методами. В настоящей работе было построено 20 разнообразных фильтрацией, для каждой из которых были получены $0$ и $1$ персистентные гомологии, из диаграмм которых было получено 14 признаков. Таким образом, для одной картинки было получено $20 \times 2 \times 14 = 560$ признаков.
+			\frametitle{Алгоритм построения векторного представления}
+			\begin{algorithm}[H]
+				\normalsize
+				\SetAlgoLined
+				\KwData{Черное-белое изображение}
+				\KwResult{Вектор размерности $d$}
+				По изображению построить $n$ разных кубических фильтраций
+				
+				\ForEach{фильтрации}
+				{найти ее $0$ и $1$ кубические гомологии
+					
+				 построить диаграмму устойчивости
+			 		
+			 	 посчитать $k$ разных векторных представлений
+		 		
+	 			} 
+ 				
+ 				Собрать $d = 2nk$ представлений в один вектор
+				\note{В своей работе я реализовывал следующий алгоритм ... Построить фильтрацию для изображения можно различными методами. В настоящей работе было построено 20 разнообразных фильтрацией, для каждой из которых были получены $0$ и $1$ персистентные гомологии, из диаграмм которых было получено 14 признаков. Таким образом, для одной картинки было получено $20 \times 2 \times 14 = 560$ признаков.}
+			\end{algorithm}
 		\end{frame}
+		\iffalse
 		\begin{frame}
 			\frametitle{Пайплайн используемого метода построения векторного представления}
 			Построить фильтрацию для изображения можно различными методами. В настоящей работе было построено 20 разнообразных фильтрацией, для каждой из которых были получены $0$ и $1$ персистентные гомологии, из диаграмм которых было получено 14 признаков. Таким образом, для одной картинки было получено $20 \times 2 \times 14 = 560$ признаков.
@@ -235,12 +303,40 @@
 				\includegraphics[width=\linewidth]{pipelineDiagram.png}
 			\end{figure}
 		\end{frame}
+		\fi
+		
+		\begin{frame}
+			\frametitle{Использованное ПО}
+			\begin{columns}[T] % align columns
+				\begin{column}{.25\textwidth}
+					\color{red}\rule{\linewidth}{4pt}
+					\normalsize
+					\begin{itemize}
+						\item Python
+						\item Scikit-Learn
+						\item Giotto-TDA
+						\item NumPy
+						\item Matplotlib
+					\end{itemize}
+				\end{column}%
+				\hfill%
+				\begin{column}{.74\textwidth}
+					\begin{figure}
+						\centering
+						\includegraphics[width=0.6\linewidth]{libraries.jpg}
+					\end{figure}
+				\end{column}%
+			\end{columns}
+		\note{Данный алгоритм был написан на Python. Для машинного обучения были использлваны ..., а для вычисления устойчивых гомологий ... . Из всегда датасета MNIST я использовал лишь малое число объектов -- 700 на трейне, 300 на тесте.}
+		\end{frame}
+		
 		\begin{frame}
 			\frametitle{Процесс получения векторного представления}
 			\begin{figure}
 				\centering
 				\includegraphics[width=\linewidth]{pipe.jpg}
 			\end{figure}
+		\note{На слайде изображено получение векторого представления для конкретного изображения...}
 		\end{frame}
 		\subsection{Полученные результаты}
 		\begin{frame}
@@ -249,22 +345,27 @@
 				\begin{table}[!htbp]
 					\centering
 					\small
-					\begin{tabularx}{\linewidth}{|X|X|X|}
-						\hline
-						Название модели & Значение на тренировочной выборке & Значение на тестовой выборке\\ \hline
-						Логистическая регрессия & 0.989 & 0.903 \\
-						\hline 
-						Метод опорных векторов & 1.0 & 0.893 \\
-						\hline
-						Случайный лес & 1.0 & 0.89 \\
-						\hline
-						CatBoost & 1.0 & 0.893 \\ 
-						\hline
-					\end{tabularx}
 					\caption{Значения базовых моделей на тренировочной и тестовой выборках}	
 					\label{tabl:baselines}
+					\begin{tabularx}{\linewidth}{|X|X|X|}
+					\hline
+					Название модели & Значение на тренировочной выборке & Значение на тестовой выборке\\ \hline
+					Логистическая регрессия & 0.989 & 0.903 \\
+					\hline 
+					Метод опорных векторов & 1.0 & 0.893 \\
+					\hline
+					Случайный лес & 1.0 & 0.89 \\
+					\hline
+					LightGBM & 1.0 & 0.9 \\
+					\hline
+					XGBoost & 1.0 & 0.883 \\
+					\hline
+					CatBoost & 1.0 & 0.893 \\ 
+					\hline
+					\end{tabularx}
 				\end{table}
 			\end{center}
+		\note{Получив векторые представления для диаграмм, далее использовались методы машинного обучения для предсказания класса. Видно, что методы даже с неподобранными параметрами показывают очень хороший результат, при этом многие модели переобучаются.}
 		\end{frame}
 		\begin{frame}
 			\frametitle{Сравнение результатов различных методов машинного обучения}
@@ -272,6 +373,7 @@
 				\begin{table}[!htbp]
 					\centering
 					\small
+					\caption{Значения наилучших моделей, полученных в результате подбора параметров поиском по сетке, на тренировочной и тестовой выборках}	
 					\begin{tabularx}{\linewidth}{|X|X|X|}
 						\hline
 						Название модели & Значение на тренировочной выборке & Значение на тестовой выборке\\ \hline
@@ -279,55 +381,72 @@
 						\hline 
 						Метод опорных векторов & 0.903 & 0.893 \\
 						\hline
-						Случайный лес & 0.89 & 0.89 \\
+						Случайный лес & 0.88 & 0.87 \\
 						\hline
-						CatBoost & 0.905 & 0.9 \\ 
+						LightGBM & 0.908 & 0.917 \\
+						\hline
+						XGBoost & 0.907 & 0.897 \\ 
+						\hline
+						CatBoost & 1.0 & 0.927 \\ 
 						\hline
 					\end{tabularx}
-					\caption{Значения наилучших моделей, полученных в результате подбора параметров поиском по сетке, на тренировочной и тестовой выборках}	
 					\label{tabl:gridsearch}
 				\end{table}
 			\end{center}
+		\note{На данном слайде изображены модели с подобранными гиперпараметрами. Действительно, данные модели показывают очень неплохой результат точности, учитывая небольшую выборку. Вероятно многие признаки коррелируют друг с другом, поэтому с помощью случайного леса отранжируем признаки по важности и построим график точности моделей от числа признаков. Также сравним качество данных моделей с моделями, которые в качестве признаков рассматривают сами изображения, точнее их плоские представления. Такой вариант считается классическим}
 		\end{frame}
 		\begin{frame}
 			\frametitle{Подбор гиперпараметров и отбор признаков}
-			\begin{figure}[!htbp]
-				\centering % <-- added
-				\begin{subfigure}{0.25\textwidth}
-					\includegraphics[width=\linewidth]{log_diff_features_train.png}
-					\caption{Логистическая регрессия на тренировочной выборке}
-					\label{fig:1}
-				\end{subfigure}\hfil % <-- added
-				\begin{subfigure}{0.25\textwidth}
-					\includegraphics[width=\linewidth]{svm_diff_features_train.png}
-					\caption{Метод опорных векторов на тренировочной выборке}
-					\label{fig:2}
-				\end{subfigure}\hfil % <-- added
-				\begin{subfigure}{0.25\textwidth}
-					\includegraphics[width=\linewidth]{rf_diff_features_train.png}
-					\caption{Случайный лес на тренировочной выборке}
-					\label{fig:3}
-				\end{subfigure}
-				
-				\begin{subfigure}{0.25\textwidth}
-					\includegraphics[width=\linewidth]{log_diff_features_test.png}
-					\caption{Логистическая регрессия на тестовой выборке}
-					\label{fig:4}
-				\end{subfigure}\hfil % <-- added
-				\begin{subfigure}{0.25\textwidth}
-					\includegraphics[width=\linewidth]{svm_diff_features_test.png}
-					\caption{Метод опорных векторов на тестовой выборке}
-					\label{fig:5}
-				\end{subfigure}\hfil % <-- added
-				\begin{subfigure}{0.25\textwidth}
-					\includegraphics[width=\linewidth]{rf_diff_features_test.png}
-					\caption{Случайный лес на тестовой выборке}
-					\label{fig:6}
-				\end{subfigure}
-				\caption{Сравнение различных моделей, которые используют различные признаки}
-				\label{accuracies_diff_features}
+			\begin{figure}
+			\begin{subfigure}{0.48\textwidth}
+				\includegraphics[width=\linewidth]{log_diff_features_train.png}
+				\caption{Тренировочная выборка}
+				\label{fig:1}
+			\end{subfigure}%\hfil % <-- added
+			\begin{subfigure}{0.48\textwidth}
+				\includegraphics[width=\linewidth]{log_diff_features_test.png}
+				\caption{Тестовая выборка}
+				\label{fig:2}
+			\end{subfigure}
+			\caption{Логистическая регрессия}
 			\end{figure}
+		\note{Сравнивая с моделью с обычными признаками видно, что модель с топологическими признаками показывает более высокую точность. Помимо этого видно, что, скажем, первые 100 важных топ признаков, несут в себе больше информации, чем первые 100 обычных}
 		\end{frame}
+			\begin{frame}
+				\frametitle{Подбор гиперпараметров и отбор признаков}
+				\begin{figure}
+					\begin{subfigure}{0.48\textwidth}
+						\includegraphics[width=\linewidth]{svm_diff_features_train.png}
+						\caption{Тренировочная выборка}
+						\label{fig:1}
+					\end{subfigure}%\hfil % <-- added
+					\begin{subfigure}{0.48\textwidth}
+						\includegraphics[width=\linewidth]{svm_diff_features_test.png}
+						\caption{Тестовая выборка}
+						\label{fig:2}
+					\end{subfigure}
+				\caption{Метод опорных векторов}
+				\end{figure}
+			\note{Похожая ситуация и с свм, хотя и менее наглядно. Видно, что в среднем имеется прирост точности у моделей с топологическими признаками, чем с обычными.}
+			\end{frame}
+			\begin{frame}
+				\frametitle{Подбор гиперпараметров и отбор признаков}
+				\begin{figure}
+					\begin{subfigure}{0.48\textwidth}
+						\includegraphics[width=\linewidth]{rf_diff_features_train.png}
+						\caption{Тренировочная выборка}
+						\label{fig:1}
+					\end{subfigure}%\hfil % <-- added
+					\begin{subfigure}{0.48\textwidth}
+						\includegraphics[width=\linewidth]{rf_diff_features_test.png}
+						\caption{Тестовая выборка}
+						\label{fig:2}
+					\end{subfigure}
+				\caption{Случайный лес}
+				\end{figure}
+			\note{Такая же картина и для случайного леса. Модели с топологическими признаками в целом требуется гораздо меньше признаков, чем обычно модели, и при этом она показывает стабильно более высокую точность. Таким образом, можно считать, что реализованный алгоритм является алгоритмом повышения размерности}
+			\end{frame}
+		
 		\begin{frame}
 			\frametitle{Первые несколько изображений, на которых ошибся классификатор}
 			\begin{figure}[!htbp]
@@ -337,48 +456,49 @@
 					\label{missclassified}
 				\end{center}
 			\end{figure}
+		\note{Также интересно посмотреть, на каких изображениях ошибся классификатор. Видно, почему он некоторые изображения классифицировал именно так, как классифицировал, при этом видно, что эти изображения действительно очень сложно корректно классифицировать}
 		\end{frame}
 		
 	\section{Заключение}
 		\subsection{Результаты}
 		\begin{frame}
-			\frametitle{Результаты}
+			\frametitle{Результаты} % ОТДЕЛЬНО РЕЗУЛЬТАТЫ, ОТДЕЛЬНО ВЫВОДЫ
 			\begin{itemize}
 				\item В ходе данной работы был изучен теоретический материал по алгебраической и прикладной топологии и машинному обучению. 
-				\item Был реализован алгоритм классификации датасета MNIST, используя только топологические свойства изображенных рукописных цифр, который выдавал высокий уровень точности.
+				\item Было проведено сравнение пакетов топологического анализа данных.
+				\item Был реализован алгоритм классификации датасета MNIST, который использовал только топологические характеристики рукописных цифр в качестве признаков.%, который выдавал высокий уровень точности.
 				
-				\item В ходе данной работы было выявлено, что реализованный алгоритм является эффективным алгоритмом понижения размерности пространства признаков. 
-				\item Было проведено сравнение с другими моделями машинного обучения, в результате которого было обнаружено, что реализованный алгоритм показывает более высокую точность классификации при меньшем числе признаков.
+				%\item В ходе данной работы было выявлено, что реализованный алгоритм является эффективным алгоритмом понижения размерности пространства признаков. 
+				\item Было проведено сравнение моделей машинного обучения с разными признаками. %Было проведено сравнение с другими моделями машинного обучения, в результате которого было обнаружено, что реализованный алгоритм показывает более высокую точность классификации при меньшем числе признаков.
 			\end{itemize}
+		\note{Таким образом, в ходе данной бакалаврской работы было ...}
 		\end{frame}
+		
 		\begin{frame}
+			\frametitle{Выводы} % ОТДЕЛЬНО РЕЗУЛЬТАТЫ, ОТДЕЛЬНО ВЫВОДЫ
+			\begin{itemize}
+				\item Подход, основанный на топологических характеристиках данных, показал свою работоспособность на примере изображений.
+				\item Реализованный алгоритм является эффективным алгоритмом понижения размерности пространства признаков: он показывает более высокую точность классификации при меньшем числе признаков. 
+			\end{itemize}
+		\note{В ходе данной работы были получены следующие выводы: }
+		\end{frame}
+	
+		\begin{frame}%[allowframebreaks]
 			\centering
 			
 			\begin{beamercolorbox}[sep=8pt,center,colsep=-4bp,rounded=true,shadow=true]{institute}
-				\usebeamerfont{institute}\insertinstitute
+				\usebeamerfont{title}{Спасибо за внимание!}
 			\end{beamercolorbox}
-			
-			{\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
-			
-			\begin{beamercolorbox}[sep=8pt,center,colsep=-4bp,rounded=true,shadow=true]{title}
-				\usebeamerfont{title}\inserttitle\par%
-				\ifx\insertsubtitle\@empty%
-				\else%
-				\vskip0.25em%
-				{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
-				\fi%     
-			\end{beamercolorbox}%
 			
 			\vskip1em\par
 			
-			\begin{beamercolorbox}[sep=8pt,center,colsep=-4bp,rounded=true,shadow=true]{date}
-				\usebeamerfont{date}\insertdate
+			\begin{beamercolorbox}[sep=8pt,left,colsep=-4bp,rounded=true,shadow=true]{date}
+				\normalsize
+				\usebeamerfont{date}{Мои публикации на данную тему:
+				\nocite{*}
+				\printbibliography	
+			}
 			\end{beamercolorbox}\vskip0.5em
-			
-			\begin{beamercolorbox}[sep=8pt,center,colsep=-4bp,rounded=true,shadow=true]{author}
-				\usebeamerfont{author}\insertauthor
-			\end{beamercolorbox}
-			
-			
+		\note{Спасибо за внимание}
 		\end{frame}
 \end{document}
